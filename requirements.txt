@@ -1,0 +1,8 @@
+requests
+google-api-python-client
+pandas
+numpy
+scikit-learn
+xgboost
+tensorflow
+Pillow
