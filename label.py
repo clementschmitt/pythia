@@ -5,7 +5,6 @@ df = pa.read_json(DATA_DIR / "dataset_fps_fr_clean.json")
 
 print(f"=== DISTRIBUTION VIEW ===")
 print(f"P20 : {df['view_count'].quantile(0.20)}")
-print(f"P40 : {df['view_count'].quantile(0.40)}")
 print(f"P75 : {df['view_count'].quantile(0.75)}")
 print(f"P90 : {df['view_count'].quantile(0.90)}")
 
