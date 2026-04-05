@@ -1,9 +1,7 @@
 import pandas as pa
 import re
 
-from pathlib import Path
-ROOT = Path(__file__).parent
-DATA_DIR = ROOT / "data"
+from config import ROOT, DATA_DIR
 
 def duration_to_seconds(d):
     match = re.match(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", d)

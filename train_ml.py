@@ -5,9 +5,7 @@ from sklearn.metrics import classification_report, accuracy_score
 from xgboost import XGBClassifier
 from sklearn.preprocessing import LabelEncoder
 
-from pathlib import Path
-ROOT = Path(__file__).parent
-DATA_DIR = ROOT / "data"
+from config import ROOT, DATA_DIR
 
 df = pa.read_json(DATA_DIR / "dataset_fps_fr_labeled.json")
 print(f"Dataset : {df.shape[0]} vidéos")

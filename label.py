@@ -1,8 +1,5 @@
 import pandas as pa
-
-from pathlib import Path
-ROOT = Path(__file__).parent
-DATA_DIR = ROOT / "data"
+from config import ROOT, DATA_DIR
 
 df = pa.read_json(DATA_DIR / "dataset_fps_fr_clean.json")
 
