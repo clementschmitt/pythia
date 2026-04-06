@@ -28,7 +28,7 @@ clean.py      → Nettoyage (suppression Shorts, VODs, doublons)
 label.py      → Labellisation par quantiles (Viral / Strong / Moderate / Weak)
 train_ml.py   → Entraînement ML classique
 train_cnn.py          → Entraînement CNN sur miniatures (avec data augmentation)
-train_cnn_mobilenet.py → Transfer learning MobileNetV2 (en cours)
+train_cnn_mobilenet.py → Transfer learning MobileNetV2
 
 
 
@@ -46,7 +46,7 @@ train_cnn_mobilenet.py → Transfer learning MobileNetV2 (en cours)
 |--------|--------------|-------|
 | CNN from scratch | 45.68% | Overfitting massif (train 91% / val 55%) |
 | CNN + data augmentation | 52.47% | Overfitting réduit, généralisation améliorée |
-| MobileNetV2 (transfer learning) | en cours | — |
+| MobileNetV2 (transfer learning) | 48.77% | Transfer learning — poids gelés, Dense 64 + Dropout |
 
 ### Deep Learning — à venir
 - LSTM sur les titres
