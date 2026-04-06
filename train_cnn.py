@@ -27,13 +27,33 @@ X = np.array(images)
 X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.30, random_state=42)
 X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.50, random_state=42)
 
+# Define the CNN model : We use a simple architecture with 2 convolutional layers, followed by max pooling, 
+# flattening, and dense layers. The final layer has 4 units (one for each class) and uses softmax activation 
+# for multi-class classification.
 model_cnn = keras.Sequential([keras.layers.Input(shape=(224,224,3)),
-                  keras.layers.Conv2D(32, kernel_size=3, activation="relu"),
-                  keras.layers.MaxPooling2D(pool_size=2),
-                  keras.layers.Conv2D(64, kernel_size=3, activation="relu"),
-                  keras.layers.MaxPooling2D(pool_size=2),
-                  keras.layers.Flatten(),
-                  keras.layers.Dense(64, activation="relu"),
-                  keras.layers.Dropout(0.5),
-                  keras.layers.Dense(4, activation="softmax")
-                  ])
+                keras.layers.RandomFlip("horizontal"),
+                keras.layers.RandomRotation(0.1),
+                keras.layers.RandomZoom(0.1),
+                keras.layers.Conv2D(32, kernel_size=3, activation="relu"),
+                keras.layers.MaxPooling2D(pool_size=2),
+                keras.layers.Conv2D(64, kernel_size=3, activation="relu"),
+                keras.layers.MaxPooling2D(pool_size=2),
+                keras.layers.Flatten(),
+                keras.layers.Dense(64, activation="relu"),
+                keras.layers.Dropout(0.5),
+                keras.layers.Dense(4, activation="softmax")
+                ])
+
+# Compile the model : We define how the model will learn : the optimizer (Adam), the loss function 
+# (sparse_categorical_crossentropy) and the metrics (accuracy).
+model_cnn.compile(optimizer = "adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
+
+# Train the model : We fit the model on the training data for 10 epochs, and we also provide the validation 
+# data to monitor the performance of the model on unseen data during training.
+model_cnn.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
+
+#Evaluate the model : Finally, we evaluate the performance of the trained model on the test set to see how well 
+# it generalizes to new data.
+loss, accuracy = model_cnn.evaluate(X_test, y_test)
+
+print(f"Loss: {loss:.4f}, Accuracy: {accuracy:.2%}")
