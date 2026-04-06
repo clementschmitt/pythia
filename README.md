@@ -27,7 +27,8 @@ collect.py    → Scraping API YouTube
 clean.py      → Nettoyage (suppression Shorts, VODs, doublons)
 label.py      → Labellisation par quantiles (Viral / Strong / Moderate / Weak)
 train_ml.py   → Entraînement ML classique
-train_cnn.py  → Entraînement Deep Learning sur miniatures (en cours)
+train_cnn.py          → Entraînement CNN sur miniatures (avec data augmentation)
+train_cnn_mobilenet.py → Transfer learning MobileNetV2 (en cours)
 
 
 
@@ -39,8 +40,15 @@ train_cnn.py  → Entraînement Deep Learning sur miniatures (en cours)
 | Random Forest | 58% |
 | XGBoost | 60% |
 
-### Deep Learning — en cours
-- CNN sur les miniatures YouTube
+### Deep Learning — CNN sur miniatures
+
+| Modèle | Test Accuracy | Notes |
+|--------|--------------|-------|
+| CNN from scratch | 45.68% | Overfitting massif (train 91% / val 55%) |
+| CNN + data augmentation | 52.47% | Overfitting réduit, généralisation améliorée |
+| MobileNetV2 (transfer learning) | en cours | — |
+
+### Deep Learning — à venir
 - LSTM sur les titres
 - CamemBERT pour l'analyse sémantique en français
 
@@ -59,7 +67,9 @@ python collect.py       # 1. Collecter les données
 python clean.py         # 2. Nettoyer le dataset
 python label.py         # 3. Labelliser
 python train_ml.py      # 4. Entraîner ML classique
-python train_cnn.py     # 5. Entraîner CNN (miniatures)
+python train_cnn.py            # 5. Entraîner CNN (miniatures)
+py -3.12 train_cnn.py          # 5b. Avec TensorFlow (Python 3.12)
+py -3.12 train_cnn_mobilenet.py # 6. Transfer learning MobileNetV2
 ```
 
 ## Configuration
