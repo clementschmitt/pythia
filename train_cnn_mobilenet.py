@@ -4,6 +4,7 @@ import numpy as np
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 from config import ROOT, DATA_DIR, THUMBNAILS_DIR
 
@@ -17,7 +18,7 @@ for i, row in df.iterrows():
     image = Image.open(THUMBNAILS_DIR / f"{row['video_id']}.jpg")
     image_resized = image.resize((224,224))
 
-    arr = np.array(image_resized) / 255.0
+    arr = preprocess_input(np.array(image_resized).astype(np.float32))
     images.append(arr)
 
 X = np.array(images)
@@ -31,7 +32,9 @@ X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.50, 
 # and weights="imagenet" to load the pre-trained weights. 
 # We also freeze the base model's layers to prevent them from being updated during training.
 base_model = keras.applications.MobileNetV2(input_shape=(224,224,3), include_top=False, weights="imagenet")
-base_model.trainable = False
+base_model.trainable = True
+for layer in base_model.layers[:-10]:
+    layer.trainable = False
 
 x = base_model.output
 x = keras.layers.GlobalAveragePooling2D()(x)
@@ -41,7 +44,7 @@ predictions = keras.layers.Dense(4, activation="softmax")(x)
 
 model = keras.Model(inputs=base_model.input, outputs=predictions)
 
-model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
+model.compile(optimizer=keras.optimizers.Adam(1e-5), loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
 
 loss, accuracy = model.evaluate(X_test, y_test)
