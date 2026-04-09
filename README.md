@@ -8,17 +8,15 @@ Développé sur un dataset de vidéos gaming FPS FR.
 L'objectif est de prédire si une vidéo YouTube sera virale avant sa publication,
 en s'appuyant sur des données historiques (vues, likes, titre, miniature).
 
-La viralité est définie en 4 niveaux calculés par quantiles sur le dataset :
-- **Viral** — vidéos dans le top 10%
-- **Strong** — vidéos dans le top 10% à 25% de vues
-- **Moderate** — vidéos dans le 25% à 80%
-- **Weak** — vidéos sous le top 80%
+La viralité est définie en 2 classes calculées par quantile sur le dataset :
+- **Viral** — vidéos dans le top 25% des vues
+- **Not Viral** — vidéos sous ce seuil
 
 ## Dataset
 
-- ~4000 vidéos collectées via l'API YouTube Data v3
-- ~1076 vidéos après nettoyage (suppression doublons, Shorts, VODs, valeurs aberrantes)
-- Niche : gaming FPS FR (Valorant, CS2, Apex, CoD...)
+- ~6291 vidéos collectées via l'API YouTube Data v3
+- ~3557 vidéos après nettoyage (suppression doublons, Shorts, VODs, valeurs aberrantes)
+- Niche : gaming FPS/TPS FR (Valorant, CS2, Apex, CoD, Black Ops 6, Marvel Rivals, Arc Raiders, Helldivers 2...)
 - Features : vues, likes, titre, URL miniature
 
 ## Pipeline
@@ -34,19 +32,18 @@ train_cnn_mobilenet.py → Transfer learning MobileNetV2
 
 ## Modèles
 
-### ML Classique
-| Modèle | Accuracy |
-|--------|----------|
-| Random Forest | 58% |
-| XGBoost | 60% |
+### ML Classique (3557 vidéos, features pré-publication uniquement)
+| Modèle | Accuracy | Recall viral | F1 viral |
+|--------|----------|--------------|----------|
+| Random Forest (`class_weight=balanced`) | 73.91% | 0.14 | 0.22 |
+| XGBoost (`scale_pos_weight`) | 75.00% | 0.43 | 0.45 |
 
 ### Deep Learning — CNN sur miniatures
 
-| Modèle | Test Accuracy | Notes |
+| Modèle | Val Accuracy | Notes |
 |--------|--------------|-------|
-| CNN from scratch | 45.68% | Overfitting massif (train 91% / val 55%) |
-| CNN + data augmentation | 52.47% | Overfitting réduit, généralisation améliorée |
-| MobileNetV2 (transfer learning) | 48.77% | Transfer learning — poids gelés, Dense 64 + Dropout |
+| CNN from scratch | ~53% | Instable, pas assez de données |
+| MobileNetV2 (transfer learning) | 74.86% (epoch 10) | En progression, entraînement non terminé |
 
 ### Deep Learning — à venir
 - LSTM sur les titres

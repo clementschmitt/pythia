@@ -12,31 +12,35 @@ sys.stdout.reconfigure(encoding='utf-8')
 from dotenv import load_dotenv
 from pathlib import Path
 
+from config import ROOT, DATA_DIR
+
 # Chemins
-ROOT = Path(__file__).parent.parent
-DATA_DIR = ROOT / "data"
 DATASET_FILE = DATA_DIR / "dataset_fps_fr_v2.json"
 
-load_dotenv(ROOT / ".env")
+load_dotenv(ROOT.parent / ".env")
 cle = os.getenv("YOUTUBE_API_KEY")
 
-# Requêtes ciblées par noms de jeux FPS
+# Requêtes ciblées par noms de jeux FPS/TPS
 requetes = [
-    "Valorant gameplay français",
-    "CS2 gameplay FR",
-    "Call of Duty gameplay français",
-    "Overwatch 2 gameplay FR",
-    "Rainbow Six Siege français",
-    "Apex Legends gameplay FR",
-    "Warzone gameplay FR",
-    "Battlefield gameplay FR",
-    "Escape from Tarkov gameplay FR",
-    "The Finals gameplay FR",
-    "Halo Infinite gameplay FR",
-    "XDefiant gameplay FR",
-    "Destiny 2 gameplay FR",
-    "Ready or Not gameplay FR",
-    "Hunt Showdown gameplay FR",
+    "Delta Force gameplay FR",
+    "FragPunk gameplay FR",
+    "Arc Raiders gameplay FR",
+    "Gray Zone Warfare gameplay FR",
+    "Deadlock gameplay FR",
+    "PUBG gameplay FR",
+    "Fortnite gameplay FR",
+    "Insurgency Sandstorm gameplay FR",
+    "Spectre Divide gameplay FR",
+    "Deep Rock Galactic gameplay FR",
+    "Helldivers 2 gameplay FR",
+    "Black Ops 6 gameplay FR",
+    "Marvel Rivals gameplay FR",
+    "Battlefield 2042 gameplay FR",
+    "GTA Online gameplay FR",
+    "Rust gameplay FR",
+    "Tarkov Arena gameplay FR",
+    "The Division 2 gameplay FR",
+    "Borderlands 3 gameplay FR",
 ]
 
 video_ids_vus = set()

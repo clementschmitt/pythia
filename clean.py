@@ -41,8 +41,8 @@ print(f"Durée médiane : {df["duration_seconds"].median()}s")
 
 
 df = df[df['duration_seconds'] >= 180]
-df = df[df['duration_seconds'] <= 2400]
-print(f"Vidéos après filtrage durée (3min-40min) : {df.shape[0]}")
+df = df[df['duration_seconds'] <= 3600]
+print(f"Vidéos après filtrage durée (3min-60min) : {df.shape[0]}")
 
 #calculer les features de titre
 df["title_length"] = df["title"].apply(len)

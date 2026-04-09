@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pa
 from PIL import Image
 import numpy as np
@@ -13,15 +15,22 @@ le = LabelEncoder()
 y = le.fit_transform(df["label"])
 
 images = []
+labels = []
 
 for i, row in df.iterrows():
-    image = Image.open(THUMBNAILS_DIR / f"{row['video_id']}.jpg")
-    image_resized = image.resize((224,224))
+    try:
+        image = Image.open(THUMBNAILS_DIR / f"{row['video_id']}.jpg")
+        image_resized = image.resize((224,224))
 
-    arr = preprocess_input(np.array(image_resized).astype(np.float32))
-    images.append(arr)
+        arr = preprocess_input(np.array(image_resized).astype(np.float32))
+        images.append(arr)
+        labels.append(y[i])
+    except Exception as e:
+        print(f"Error loading image for video {row['video_id']}: {e}", file=sys.stderr)
+        continue
 
 X = np.array(images)
+y = np.array(labels)
 
 # Split 70% train / 15% validation / 15% test
 X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.30, random_state=42)
@@ -40,12 +49,18 @@ x = base_model.output
 x = keras.layers.GlobalAveragePooling2D()(x)
 x = keras.layers.Dense(64, activation="relu")(x)
 x = keras.layers.Dropout(0.5)(x)
-predictions = keras.layers.Dense(4, activation="softmax")(x)
+predictions = keras.layers.Dense(2, activation="softmax")(x)
 
 model = keras.Model(inputs=base_model.input, outputs=predictions)
 
 model.compile(optimizer=keras.optimizers.Adam(1e-5), loss="sparse_categorical_crossentropy", metrics=["accuracy"])
-model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
+
+class_weights = {
+    0: len(y_train) / (2 * (y_train == 0).sum()),
+    1: len(y_train) / (2 * (y_train == 1).sum())
+}
+
+model.fit(X_train, y_train, epochs=20, validation_data=(X_val, y_val), class_weight=class_weights)
 
 loss, accuracy = model.evaluate(X_test, y_test)
 
