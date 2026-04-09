@@ -12,7 +12,7 @@ Built on a dataset of French-language FPS/TPS gaming videos.
 ### Context
 
 The goal is to predict whether a YouTube video will go viral before it's published,
-using historical data (views, likes, title, thumbnail).
+using data known before publication (title, duration, publishing time, thumbnail).
 
 Virality is defined as 2 classes based on quantiles:
 - **Viral** — top 25% by view count
@@ -95,7 +95,7 @@ Développé sur un dataset de vidéos gaming FPS/TPS FR.
 ### Contexte
 
 L'objectif est de prédire si une vidéo YouTube sera virale avant sa publication,
-en s'appuyant sur des données historiques (vues, likes, titre, miniature).
+en s'appuyant sur des données connues avant publication (titre, durée, heure de publication, miniature).
 
 La viralité est définie en 2 classes calculées par quantile sur le dataset :
 - **Viral** — vidéos dans le top 25% des vues
