@@ -34,6 +34,7 @@ label.py               → Labeling by quantile (Viral / Not Viral)
 train_ml.py            → Classical ML training
 train_cnn.py           → CNN training on thumbnails (with data augmentation)
 train_cnn_mobilenet.py → Transfer learning MobileNetV2
+log_results.py         → Log automatique des résultats d'entraînement
 ```
 
 ### Models
@@ -45,10 +46,15 @@ train_cnn_mobilenet.py → Transfer learning MobileNetV2
 | XGBoost (`scale_pos_weight`) | 75.00% | 0.43 | 0.45 |
 
 #### Deep Learning — CNN on thumbnails
-| Model | Val Accuracy | Notes |
-|-------|--------------|-------|
-| CNN from scratch | ~53% | Unstable, insufficient data |
-| MobileNetV2 (transfer learning) | 74.86% (epoch 10) | Still improving, training not complete |
+| Model | Best Val Accuracy | Test Accuracy | Notes |
+|-------|------------------|---------------|-------|
+| CNN from scratch | ~53% | - | Unstable, insufficient data |
+| MobileNetV2 Softmax (patience=3) | 72.80% | 69.10% | Baseline |
+| MobileNetV2 Sigmoid (patience=3) | 74.86% | 71.72% | Better generalization |
+| MobileNetV2 Sigmoid (patience=5) | **77.30%** | **71.35%** | Best config — EarlyStopping optimal |
+| MobileNetV2 Sigmoid (patience=7) | 74.86% | 70.60% | Diminishing returns |
+
+> Best config: Sigmoid + `binary_crossentropy` + `patience=5` + `learning_rate=1e-5`
 
 #### Deep Learning — coming soon
 - LSTM on video titles
@@ -117,6 +123,7 @@ label.py               → Labellisation par quantile (Viral / Not Viral)
 train_ml.py            → Entraînement ML classique
 train_cnn.py           → Entraînement CNN sur miniatures (avec data augmentation)
 train_cnn_mobilenet.py → Transfer learning MobileNetV2
+log_results.py         → Log automatique des résultats d'entraînement
 ```
 
 ### Modèles
@@ -128,10 +135,15 @@ train_cnn_mobilenet.py → Transfer learning MobileNetV2
 | XGBoost (`scale_pos_weight`) | 75.00% | 0.43 | 0.45 |
 
 #### Deep Learning — CNN sur miniatures
-| Modèle | Val Accuracy | Notes |
-|--------|--------------|-------|
-| CNN from scratch | ~53% | Instable, pas assez de données |
-| MobileNetV2 (transfer learning) | 74.86% (epoch 10) | En progression, entraînement non terminé |
+| Modèle | Meilleure Val Accuracy | Test Accuracy | Notes |
+|--------|----------------------|---------------|-------|
+| CNN from scratch | ~53% | - | Instable, pas assez de données |
+| MobileNetV2 Softmax (patience=3) | 72.80% | 69.10% | Baseline |
+| MobileNetV2 Sigmoid (patience=3) | 74.86% | 71.72% | Meilleure généralisation |
+| MobileNetV2 Sigmoid (patience=5) | **77.30%** | **71.35%** | Meilleure config — EarlyStopping optimal |
+| MobileNetV2 Sigmoid (patience=7) | 74.86% | 70.60% | Rendements décroissants |
+
+> Meilleure config : Sigmoid + `binary_crossentropy` + `patience=5` + `learning_rate=1e-5`
 
 #### Deep Learning — à venir
 - LSTM sur les titres
