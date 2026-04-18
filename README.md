@@ -42,13 +42,13 @@ log_results.py         → Log automatique des résultats d'entraînement
 #### Classical ML (3557 videos, pre-publication features only)
 | Model | Accuracy | Viral Recall | Viral F1 |
 |-------|----------|--------------|----------|
-| Random Forest (`class_weight=balanced`) | 73.91% | 0.14 | 0.22 |
-| XGBoost (`scale_pos_weight`) | 75.00% | 0.43 | 0.45 |
+| Random Forest (`class_weight=balanced`) | 77% | 0.14 | 0.24 |
+| XGBoost (`scale_pos_weight`) | 69% | 0.33 | 0.35 |
 
 #### Deep Learning — CNN on thumbnails
 | Model | Best Val Accuracy | Test Accuracy | Notes |
 |-------|------------------|---------------|-------|
-| CNN from scratch | ~53% | - | Unstable, insufficient data |
+| CNN from scratch | 69.42% | 67.04% | Overfitting dès epoch 5, recall viral 0.47 |
 | MobileNetV2 Softmax (patience=3) | 72.80% | 69.10% | Baseline |
 | MobileNetV2 Sigmoid (patience=3) | 74.86% | 71.72% | Better generalization |
 | MobileNetV2 Sigmoid (patience=5) | **77.30%** | **71.35%** | Best config — EarlyStopping optimal |
@@ -131,13 +131,13 @@ log_results.py         → Log automatique des résultats d'entraînement
 #### ML Classique (3557 vidéos, features pré-publication uniquement)
 | Modèle | Accuracy | Recall viral | F1 viral |
 |--------|----------|--------------|----------|
-| Random Forest (`class_weight=balanced`) | 73.91% | 0.14 | 0.22 |
-| XGBoost (`scale_pos_weight`) | 75.00% | 0.43 | 0.45 |
+| Random Forest (`class_weight=balanced`) | 77% | 0.14 | 0.24 |
+| XGBoost (`scale_pos_weight`) | 69% | 0.33 | 0.35 |
 
 #### Deep Learning — CNN sur miniatures
 | Modèle | Meilleure Val Accuracy | Test Accuracy | Notes |
 |--------|----------------------|---------------|-------|
-| CNN from scratch | ~53% | - | Instable, pas assez de données |
+| CNN from scratch | 69.42% | 67.04% | Overfitting dès epoch 5, recall viral 0.47 |
 | MobileNetV2 Softmax (patience=3) | 72.80% | 69.10% | Baseline |
 | MobileNetV2 Sigmoid (patience=3) | 74.86% | 71.72% | Meilleure généralisation |
 | MobileNetV2 Sigmoid (patience=5) | **77.30%** | **71.35%** | Meilleure config — EarlyStopping optimal |

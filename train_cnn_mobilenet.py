@@ -80,3 +80,5 @@ log_result(
     test_accuracy=accuracy,
     test_loss=loss
 )
+
+model.save(ROOT / "models" / "mobilenet_v2.keras")
